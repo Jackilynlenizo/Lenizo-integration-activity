@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from "react";
 import axios from "../axios";
 
-const App = () => {
+const Home = () => {
 
-  const [products, setProducts] = useState([]);
+  const [quotes, setQuotes] = useState([]);
   const [error, setError] = useState("");
   useEffect(() => {
     axios
-      .get("/products")
-      .then((response) => setProducts(response.data.products))
+      .get("/quotes?limit=2")
+      .then((response) => setQuotes(response.data.quotes))
       .catch((error) => setError(error.message));
   }, []);
 
   return (
-    <>
-      {error !== "" && error}
-      {products.map((product, index) => {
-        return (
-          <div className="w-screen "> 
-
-            <h3 key={index}>
-            {product.title}
-          </h3>
-          </div>
-        );
-      })}
+    <><div className="w-screen h-screen bg-[#ffe9ec] flex justify-center content-center items-center"> 
+        <div className=" w-[50%] text-center h-screen pt-[80px] ">
+            <h1 className=" text-[100px]">Random Quotes for Today...</h1>
+            <div className=" font-medium justify-center p-5 border-[6px] border-red-200 rounded-2xl">
+                {error !== "" && error}
+                {quotes.map((quote, index) => {
+                    return (
+                        <h3 className="p-6 text-lg" key={index}>
+                        {quote.quote} <br/> by {quote.author} </h3>
+                        )})}
+            </div>
+            
+        </div>
+      </div>
     </>
   );
 };
 
-export default App;
+export default Home;
